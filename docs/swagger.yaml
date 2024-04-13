@@ -1,0 +1,541 @@
+definitions:
+  storage.Customer:
+    properties:
+      balance:
+        type: number
+      created_at:
+        type: string
+      customer_name:
+        type: string
+      deleted_at:
+        type: string
+      id:
+        type: integer
+      updated_at:
+        type: string
+    type: object
+  storage.Item:
+    properties:
+      cost:
+        type: number
+      created_at:
+        type: string
+      deleted_at:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      price:
+        type: number
+      sort:
+        type: integer
+      updated_at:
+        type: string
+    type: object
+  storage.ResponseError:
+    properties:
+      code:
+        type: integer
+      error: {}
+    type: object
+  storage.Transaction:
+    properties:
+      amount:
+        type: number
+      createdAt:
+        type: string
+      customerID:
+        type: integer
+      deletedAt:
+        type: string
+      id:
+        type: integer
+      itemID:
+        type: integer
+      qty:
+        type: integer
+      updatedAt:
+        type: string
+    type: object
+  storage.TransactionView:
+    properties:
+      amount:
+        type: number
+      created_at:
+        type: string
+      customer_id:
+        type: integer
+      customer_name:
+        type: string
+      deleted_at:
+        type: string
+      id:
+        type: integer
+      item_id:
+        type: integer
+      item_name:
+        type: string
+      price:
+        type: number
+      qty:
+        type: integer
+      updated_at:
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /v1/customer/{id}:
+    get:
+      description: Retrieves a single customer by its ID from the database
+      parameters:
+      - description: Customer ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Customer details
+          schema:
+            $ref: '#/definitions/storage.Customer'
+        "400":
+          description: Invalid customer ID
+          schema:
+            $ref: '#/definitions/storage.ResponseError'
+        "404":
+          description: Customer not found
+          schema:
+            $ref: '#/definitions/storage.ResponseError'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/storage.ResponseError'
+      summary: Get a single customer
+      tags:
+      - customers
+  /v1/customer/create:
+    post:
+      consumes:
+      - application/json
+      description: Creates a new customer in the database
+      parameters:
+      - description: Customer information
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/storage.Customer'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created customer
+          schema:
+            $ref: '#/definitions/storage.Customer'
+        "400":
+          description: Invalid customer data
+          schema:
+            $ref: '#/definitions/storage.ResponseError'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/storage.ResponseError'
+      summary: Create a new customer
+      tags:
+      - customers
+  /v1/customer/delete/{id}:
+    delete:
+      description: Soft deletes a customer from the database
+      parameters:
+      - description: Customer ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: Customer deleted successfully
+          schema:
+            type: string
+        "400":
+          description: Invalid customer ID
+          schema:
+            $ref: '#/definitions/storage.ResponseError'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/storage.ResponseError'
+      summary: Delete a customer
+      tags:
+      - customers
+  /v1/customer/update/{id}:
+    put:
+      consumes:
+      - application/json
+      description: Updates an existing customer in the database
+      parameters:
+      - description: Customer ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Customer information
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/storage.Customer'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Updated customer
+          schema:
+            $ref: '#/definitions/storage.Customer'
+        "400":
+          description: Invalid customer data
+          schema:
+            $ref: '#/definitions/storage.ResponseError'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/storage.ResponseError'
+      summary: Update an existing customer
+      tags:
+      - customers
+  /v1/customers:
+    get:
+      description: Retrieves all customers from the database
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of customers
+          schema:
+            items:
+              $ref: '#/definitions/storage.Customer'
+            type: array
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/storage.ResponseError'
+      summary: Get all customers
+      tags:
+      - customers
+  /v1/item/{id}:
+    get:
+      description: Retrieves a single item by its ID from the database
+      parameters:
+      - description: Item ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Item details
+          schema:
+            $ref: '#/definitions/storage.Item'
+        "400":
+          description: Invalid item ID
+          schema:
+            $ref: '#/definitions/storage.ResponseError'
+        "404":
+          description: Item not found
+          schema:
+            $ref: '#/definitions/storage.ResponseError'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/storage.ResponseError'
+      summary: Get a single item
+      tags:
+      - items
+  /v1/item/create:
+    post:
+      consumes:
+      - application/json
+      description: Creates a new item in the database
+      parameters:
+      - description: Item information
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/storage.Item'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created item
+          schema:
+            $ref: '#/definitions/storage.Item'
+        "400":
+          description: Invalid item data
+          schema:
+            $ref: '#/definitions/storage.ResponseError'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/storage.ResponseError'
+      summary: Create a new item
+      tags:
+      - items
+  /v1/item/delete/{id}:
+    delete:
+      description: Soft deletes an item from the database
+      parameters:
+      - description: Item ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: Item deleted successfully
+          schema:
+            type: string
+        "400":
+          description: Invalid item ID
+          schema:
+            $ref: '#/definitions/storage.ResponseError'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/storage.ResponseError'
+      summary: Delete an item
+      tags:
+      - items
+  /v1/item/update/{id}:
+    put:
+      consumes:
+      - application/json
+      description: Updates an existing item in the database
+      parameters:
+      - description: Item ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Item information
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/storage.Item'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Updated item
+          schema:
+            $ref: '#/definitions/storage.Item'
+        "400":
+          description: Invalid item data
+          schema:
+            $ref: '#/definitions/storage.ResponseError'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/storage.ResponseError'
+      summary: Update an existing item
+      tags:
+      - items
+  /v1/items:
+    get:
+      description: Retrieves all items from the database
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of items
+          schema:
+            items:
+              $ref: '#/definitions/storage.Item'
+            type: array
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/storage.ResponseError'
+      summary: Get all items
+      tags:
+      - items
+  /v1/transaction/{id}:
+    get:
+      description: Retrieves a single transaction by its ID from the database
+      parameters:
+      - description: Transaction ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Transaction details
+          schema:
+            $ref: '#/definitions/storage.Transaction'
+        "400":
+          description: Invalid transaction ID
+          schema:
+            $ref: '#/definitions/storage.ResponseError'
+        "404":
+          description: Transaction not found
+          schema:
+            $ref: '#/definitions/storage.ResponseError'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/storage.ResponseError'
+      summary: Get a single transaction
+      tags:
+      - transactions
+  /v1/transaction/create:
+    post:
+      consumes:
+      - application/json
+      description: Creates a new transaction
+      parameters:
+      - description: Transaction information
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/storage.Transaction'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Created transaction
+          schema:
+            $ref: '#/definitions/storage.Transaction'
+        "400":
+          description: Invalid transaction data
+          schema:
+            $ref: '#/definitions/storage.ResponseError'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/storage.ResponseError'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/storage.ResponseError'
+      summary: Create a new transaction
+      tags:
+      - transactions
+  /v1/transaction/delete/{id}:
+    delete:
+      description: Soft deletes a transaction from the database
+      parameters:
+      - description: Transaction ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: Transaction deleted successfully
+          schema:
+            type: string
+        "400":
+          description: Invalid transaction ID
+          schema:
+            $ref: '#/definitions/storage.ResponseError'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/storage.ResponseError'
+      summary: Delete a transaction
+      tags:
+      - transactions
+  /v1/transaction/details:
+    get:
+      description: Retrieves transaction details with customer and item information
+        using INNER JOIN
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of transactions with customer and item details
+          schema:
+            items:
+              $ref: '#/definitions/storage.TransactionView'
+            type: array
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/storage.ResponseError'
+      summary: Get transaction details with customer and item information
+      tags:
+      - transactions
+  /v1/transaction/update/{id}:
+    put:
+      consumes:
+      - application/json
+      description: Updates an existing transaction in the database
+      parameters:
+      - description: Transaction ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Transaction information
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/storage.Transaction'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Updated transaction
+          schema:
+            $ref: '#/definitions/storage.Transaction'
+        "400":
+          description: Invalid transaction data
+          schema:
+            $ref: '#/definitions/storage.ResponseError'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/storage.ResponseError'
+        "404":
+          description: Transaction not found
+          schema:
+            $ref: '#/definitions/storage.ResponseError'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/storage.ResponseError'
+      summary: Update an existing transaction
+      tags:
+      - transactions
+  /v1/transactions:
+    get:
+      description: Retrieves all transactions from the database
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of transactions
+          schema:
+            items:
+              $ref: '#/definitions/storage.Transaction'
+            type: array
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/storage.ResponseError'
+      summary: Get all transactions
+      tags:
+      - transactions
+swagger: "2.0"

@@ -1,0 +1,133 @@
+--CREATE CUSTOMER--
+curl -X POST \
+  http://localhost:8080/v1/customer/create \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "id": 1,
+    "customer_name": "John Doe",
+    "balance": 1000.0,
+    "created_at": "2024-04-13T12:00:00Z",
+    "updated_at": "2024-04-13T12:00:00Z",
+    "deleted_at": ""
+}'
+
+
+--GET CUSTOMER--
+curl -X GET \
+  http://localhost:8080/v1/customer/get/1
+
+
+--UPDATE CUSTOMER--
+curl -X PUT \
+  http://localhost:8080/v1/customer/update/1 \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "id": 1,
+    "customer_name": "Updated Name",
+    "balance": 1500.0,
+    "created_at": "2024-04-13T12:00:00Z",
+    "updated_at": "2024-04-13T12:00:00Z",
+    "deleted_at": ""
+}'
+
+
+--DELETE CUSTOMER--
+curl -X DELETE \
+  http://localhost:8080/v1/customer/delete/1
+
+
+--GET ALL CUSTOMERS--
+curl -X GET   http://localhost:8080/v1/customers
+
+--CREATE ITEM--
+curl -X POST \
+  http://localhost:8080/v1/item/create \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "id": 1,
+    "item_name": "Laptop",
+    "price": 1200.0,
+    "created_at": "2024-04-13T12:15:00Z",
+    "updated_at": "2024-04-13T12:15:00Z",
+    "deleted_at": ""
+}'
+
+--GET ITEM--
+curl -X GET \
+  http://localhost:8080/v1/item/get/1
+
+--UPDATE ITEM--
+curl -X PUT \
+  http://localhost:8080/v1/item/update/1 \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "id": 1,
+    "item_name": "Updated Laptop",
+    "price": 1300.0,
+    "created_at": "2024-04-13T12:15:00Z",
+    "updated_at": "2024-04-13T12:20:00Z",
+    "deleted_at": ""
+}'
+
+--DELETE ITEM--
+    curl -X DELETE \
+    http://localhost:8080/v1/item/delete/1
+
+--GET ALL ITEMS--
+curl -X GET   http://localhost:8080/v1/items
+
+--CREATE TRANSACTION--
+curl -X POST \
+  http://localhost:8080/v1/transaction/create \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "CustomerID": 5,
+    "ItemID": 2,
+    "Qty": 2,
+    "Amount": 2600.0,
+    "CreatedAt": "2024-04-13T12:30:00Z",
+    "UpdatedAt": "2024-04-13T12:30:00Z",
+    "DeletedAt": ""
+}'
+
+--GET TRANSACTION--
+curl -X GET \
+  http://localhost:8080/v1/transaction/get/7
+
+--UPDATE TRANSACTION--
+curl -X PUT \
+  http://localhost:8080/v1/transaction/update/7 \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "ID": 1,
+    "CustomerID": 1,
+    "ItemID": 1,
+    "Qty": 3,
+    "Amount": 3900.0,
+    "CreatedAt": "2024-04-13T12:30:00Z",
+    "UpdatedAt": "2024-04-13T12:35:00Z",
+    "DeletedAt": ""
+}'
+
+--DELETE TRANSACTION--
+curl -X DELETE \
+  http://localhost:8080/v1/transaction/delete/1
+
+--GET ALL TRANSACTIONS--
+curl -X GET   http://localhost:8080/v1/transactions
+
+--GET TRANSACTION DETAILS WITH CUSTOMER AND ITEM--
+curl -X GET   http://localhost:8080/v1/transaction/details
+
+--FILTER TRANSACTIONS--
+# Filter by ID
+curl -X GET \
+  'http://localhost:8080/v1/transaction/filter?id=1'
+
+# Filter by Customer Name
+curl -X GET \
+  'http://localhost:8080/v1/transaction/filter?customer_name=John Doe'
+
+# Filter by Item Name
+curl -X GET \
+  'http://localhost:8080/v1/transaction/filter?item_name=Laptop'
